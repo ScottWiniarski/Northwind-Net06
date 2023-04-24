@@ -1,0 +1,37 @@
+@model IEnumerable<CartItem>
+
+<div id="User" style="display:none;" data-email="@User.Identity.Name" data-customer="@User.IsInRole("northwind-customer")"></div>
+<table class="table table-hover">
+<thead>
+    <h4>Your Cart</h4>
+    <hr>
+    <div style="display:none;" id="ProductId"></div>
+        <div class="row">
+          <div class="col col-xs-5"><strong>Product</strong></div>
+          <div class="col col-xs-2 text-right"><strong>Price</strong></div>
+          <div class="col col-xs-2"><strong>Quantity</strong></div>
+          <div class="col col-xs-3 text-right"><strong>Total</strong></div>
+        </div>
+</thead>
+<tbody>
+    @foreach(CartItem c in Model){
+    <div class="row">
+          <div class="col col-xs-5"><strong>@c.CartItemId</strong></div>
+          <div class="col col-xs-2 text-right"><strong>@c.ProductId</strong></div>
+          <div class="col col-xs-2"><strong>@c.Quantity</strong></div>
+          <div class="col col-xs-3 text-right"><strong>Total</strong></div>
+          <div class="col col-xs-3">
+                <button>
+                    Remove
+                </button>   
+          </div>
+        </div>
+    }
+</tbody>
+
+</table>
+
+@section Scripts
+{
+  <script src="../../js/product.js"></script>
+}
