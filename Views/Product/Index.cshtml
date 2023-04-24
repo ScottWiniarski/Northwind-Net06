@@ -1,5 +1,6 @@
 @model IEnumerable<Category>
 
+<div id="User" style="display:none;" data-email="@User.Identity.Name" data-customer="@User.IsInRole("northwind-customer")"></div>
 <table class="table table-hover">
   <thead>
     <tr>
@@ -41,6 +42,7 @@
         </button>
       </div>
       <div class="modal-body">
+        <div style="display:none;" id="ProductId"></div>
         <div class="row">
           <div class="col col-xs-5"><strong>Product</strong></div>
           <div class="col col-xs-2 text-right"><strong>Price</strong></div>
@@ -67,7 +69,16 @@
     </div>
   </div>
 </div>
-
+<!-- toast -->
+<!-- Flexbox container for aligning the toasts -->
+<div id="cart_toast" class="toast bg-info text-light" role="alert" aria-live="assertive" aria-atomic="true" style="position: fixed;top: 65px;right: 10px;">
+  <div class="toast-header">
+    <strong id="toast_header">This is a toast header</strong>
+  </div>
+  <div class="toast-body" id="toast_body">
+    This is a toast message.
+  </div>
+</div>
 @section Scripts
 {
   <script src="../../js/product.js"></script>
