@@ -61,6 +61,11 @@
                         </li>
                     </ul>
                 </div>
+
+                @if(User.IsInRole("northwind-customer")) {
+                    <a asp-controller="ShoppingCart" asp-action="ViewCart"><i class="mx-3 fa-solid fa-cart-shopping"></i></a>
+                }
+
                 @if (User?.Identity?.IsAuthenticated ?? false)
                 {
                     <a class="signInOut mr-2" asp-controller="Account" asp-action="Logout"><i class="fas fa-sign-out-alt"></i> Sign Out</a>
