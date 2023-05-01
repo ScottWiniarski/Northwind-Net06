@@ -53,33 +53,49 @@ $(function () {
       return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
     }
 
-    $("#increaseCartQuantity").on('click', function(){
-      console.log("Increase number");
-    })
+    
 
-    $('#updateCartQuantity').on('click', function(){
-      $.ajax({
-        headers: {"Content-Type": "application/json"},
-        url: "../../cart/updatequantity",
-        type: 'post',
-        data: JSON.stringify({
-          "id": Number($('#ProductId').html()),
-          "email": $('#User').data('email'),
-          "qty": Number($('#Quantity').val())
-        }),
-        success: function (response, textStatus, jqXhr) {
-          // success
-          toast("Product Quantity Increased", `${response.product.productName} .`);
-        },
-        error: function (jqXHR, textStatus, errorThrown) {
-          // log the error to the console
-          console.log("The following error occured: " + jqXHR.status, errorThrown);
-          toast("Error", "Please try again later.");
-        }
-      })
-    },
+    $(".increasecartquantity").on('click', function(){
+      var id = $(this).data('id');
+      var qty = Number($('#qty_' + id).html()) + 1;
+      $('#qty_' + id).html(qty);
+
+      console.log('id: ' + id);
+      console.log('qty: ' + $('#qty_' + id).html());
+      console.log('price: ' + $('#price_' + id).html());
+
+      // console.log($("#cartquantity").val());
+      // $("#Quantity").change(function (){
+      //   var subtotal = $((this).val()++);
+      //   $("#editedquantity").html(subtotal.toString());
+      // })
+      
+    });
+
+    // $('#updateCartQuantity').on('click', function(){
+    //   $.ajax({
+    //     headers: {"Content-Type": "application/json"},
+    //     url: "../../cart/updatequantity",
+    //     type: 'post',
+    //     data: JSON.stringify({
+    //       "id": Number($('#ProductId').html()),
+    //       "email": $('#User').data('email'),
+    //       "qty": Number($('#Quantity').val())
+    //     }),
+    //     success: function (response, textStatus, jqXhr) {
+    //       // success
+    //       toast("Product Quantity Increased", `${response.product.productName} .`);
+    //     },
+    //     error: function (jqXHR, textStatus, errorThrown) {
+    //       // log the error to the console
+    //       console.log("The following error occured: " + jqXHR.status, errorThrown);
+    //       toast("Error", "Please try again later.");
+    //     }
+    //   })
+    // },
 
     $('#addToCart').on('click', function(){
+      console.log("added item");
       $('#cartModal').modal('hide');
       $.ajax({
         headers: { "Content-Type": "application/json" },
@@ -100,7 +116,7 @@ $(function () {
           toast("Error", "Please try again later.");
         }
       });
-  }));
+  });
   function toast(header, message) {
     $('#toast_header').html(header);
     $('#toast_body').html(message);

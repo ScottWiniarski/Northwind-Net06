@@ -18,15 +18,19 @@
     <div class="row">
           @* <div class="col col-xs-2 text-left"><strong>@c.CartItemId</strong></div> *@
           <div class="col col-xs-1 text-left">@(c.Product.ProductName)</div>
-          <div class="col col-xs-2 text-center">@((c.Product.UnitPrice).ToString("F"))</div>
+          <div class="col col-xs-2 text-center" id="price_@c.CartItemId">@((c.Product.UnitPrice).ToString("F"))</div>
+          @* @{
+            var editedQuantity = '';
+            if(("#increasecartquantity").)
+          } *@
           <div class="col col-xs-3 text-center">
-            <button id="increaseCartQuantity">
-              Add
+            <button class="increasecartquantity" data-id="@c.CartItemId">
+              More
             </button>
-            <button id="decreaseCartQuantity">
-              Remove
+            <button class="decreaseCartQuantity" data-id="@c.CartItemId">
+              Less
             </button>
-            @c.Quantity Unit(s)
+            <span id="qty_@c.CartItemId">@c.Quantity</span> Unit(s)
             </div>
           <div class="col col-xs-4 text-right">@("$ " + (c.Quantity * c.Product.UnitPrice).ToString("F"))</div>
           <div class="col col-xs-2 text-center">
