@@ -62,7 +62,7 @@
                     </ul>
                 </div>
                 <div>
-                    if(User.IsInRole("northwind-customer")) {
+                    @if(User.IsInRole("northwind-customer")) {
                     <a asp-controller="Cart" asp-action="Index"><i class="mx-3 fa-solid fa-cart-shopping"></i></a>
                 }
                 </div>
