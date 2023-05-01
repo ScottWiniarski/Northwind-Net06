@@ -27,6 +27,18 @@ public class DataContext : DbContext
     customerToUpdate.Fax = customer.Fax;
     SaveChanges();
   }
+
+  public CartItem UpdateQuantity(CartItemJSON cartItemJSON){
+    int CustomerId = Customers.FirstOrDefault(c => c.Email == cartItemJSON.email).CustomerId;
+    int ProductId = cartItemJSON.id;
+    CartItem cartItem = CartItems.FirstOrDefault(ci => ci.ProductId == ProductId && ci.CustomerId == CustomerId);
+
+    cartItem.Quantity = cartItemJSON.qty;
+    SaveChanges();
+    return cartItem;
+    
+  }
+
   public CartItem AddToCart(CartItemJSON cartItemJSON)
   {
     int CustomerId = Customers.FirstOrDefault(c => c.Email == cartItemJSON.email).CustomerId;
@@ -43,6 +55,8 @@ public class DataContext : DbContext
         Quantity = cartItemJSON.qty
       };
       CartItems.Add(cartItem);
+      
+      
     }
     else
     {
