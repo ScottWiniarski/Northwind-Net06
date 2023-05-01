@@ -58,11 +58,16 @@ $(function () {
     $(".increasecartquantity").on('click', function(){
       var id = $(this).data('id');
       var qty = Number($('#qty_' + id).html()) + 1;
+      var itemPrice = Number($('#price_' + id).html());
+      console.log(itemPrice);
+      var currentTotal = qty * itemPrice;
       $('#qty_' + id).html(qty);
+      $('#total_' + id).html(currentTotal);
 
       console.log('id: ' + id);
       console.log('qty: ' + $('#qty_' + id).html());
       console.log('price: ' + $('#price_' + id).html());
+      console.log('Total: ' + $("#total_" + id).html());
 
       // console.log($("#cartquantity").val());
       // $("#Quantity").change(function (){
