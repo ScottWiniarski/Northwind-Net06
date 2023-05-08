@@ -1,0 +1,54 @@
+@model CheckoutModel
+
+<div id="User" style="display:none;" data-email="@User.Identity.Name" data-customer="@User.IsInRole("northwind-customer")"></div>
+<div class="container row">
+    <div class="col col-6 border p-2 pt-3">
+        <table class="table table-hover table-striped table-bordered">
+            <thead>
+                <h4>Order Summary</h4>
+                <hr>
+                <div style="display:none;" id="ProductId"></div>
+                    <div class="row">
+                    <div class="col"><strong>Product</strong></div>
+                    <div class="col text-left"><strong>Price</strong></div>
+                    <div class="col"><strong>Quantity</strong></div>
+                    <div class="col"><strong>Total</strong></div>
+                    </div>
+            </thead>
+            <tbody>
+                @foreach(CartItem c in Model.Cart){
+                <div class="row">
+                    @* <div class="col col-xs-2 text-left"><strong>@c.CartItemId</strong></div> *@
+                    <div class="col text-left">@(c.Product.ProductName)</div>
+                    <div class="col text-left" id="price_@c.CartItemId">
+                        @("$ " + (c.Product.UnitPrice.ToString("F")))
+                        </div>
+                    <div class="col text-left">
+                        <span id="qty_@c.CartItemId">@c.Quantity</span> Unit(s)
+                        </div>
+                    <div class="col text-left">
+                        <span id="total_@c.CartItemId">
+                        @("$ " + (c.Quantity * c.Product.UnitPrice).ToString("F"))</span>
+                        </div>
+                    </div>
+                }
+            </tbody>
+        </table>
+    </div>
+    @* TODO CheckoutForm *@
+    <div class="col col-6 border">
+        @* Apply Discounts *@
+        <div id="discountsContainer" class="container" data-discounts="@Model.Discounts">
+
+        </div>
+
+        @* Create Order *@
+        <div id="confirmationContainer" class="container">
+
+        </div>
+    </div>
+</div>
+@section Scripts
+{
+  <script src="../../js/product.js"></script>
+}
