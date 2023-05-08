@@ -80,11 +80,3 @@ body {
 #product_rows tr {
   cursor: pointer;
 }
-
-/* Cart/Checkout Styles
-------------------------------------------------------------*/
-.checkoutButton {
-  position: absolute;
-  bottom: 10vh;
-  right: 22vw;
-}
