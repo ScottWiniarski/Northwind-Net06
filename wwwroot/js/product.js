@@ -59,21 +59,19 @@ $(function () {
       var id = $(this).data('id');
       var qty = Number($('#qty_' + id).html()) + 1;
       var itemPrice = Number($('#price_' + id).html());
-      console.log(itemPrice);
-      var currentTotal = qty * itemPrice;
+      //console.log(itemPrice);
+      // TODO 
+      var currentTotal = (Number($('#qty_' + id)) * Number($('#price_' + id)));
       $('#qty_' + id).html(qty);
       $('#total_' + id).html(currentTotal);
+
+      let element = $('#saveChanges_' + id);
+      element.removeAttribute('hidden');
 
       console.log('id: ' + id);
       console.log('qty: ' + $('#qty_' + id).html());
       console.log('price: ' + $('#price_' + id).html());
       console.log('Total: ' + $("#total_" + id).html());
-
-      // console.log($("#cartquantity").val());
-      // $("#Quantity").change(function (){
-      //   var subtotal = $((this).val()++);
-      //   $("#editedquantity").html(subtotal.toString());
-      // })
       
     });
 
@@ -98,6 +96,28 @@ $(function () {
     //     }
     //   })
     // },
+
+    // $('#removefromcart').on('click', function(){
+    //   var id = $(this).data('id');
+    //   $.ajax({
+    //     headers: {"Content-Type": "application/json"},
+    //     url: "../../api/removecartitem",
+    //     type: 'post',
+    //     data: JSON.stringify({
+    //       "id": Number($('#ProductId').html()),
+    //       "email": $('#User').data('email')
+    //     }),
+    //     success: function(response, textStatus, jqXhr) {
+    //       // success 
+    //       toast("Product Removed" `${response.product.productName} .`);
+    //     },
+    //     error: function (jqXHR, textStatus, errorThrown) {
+    //       // logging error to console
+    //       console.log("This error occured: " + jqXHR.status, errorThrown);
+    //       toast("Error", "Please try again later.");
+    //     }
+    //   })
+    // });
 
     $('#addToCart').on('click', function(){
       console.log("added item");

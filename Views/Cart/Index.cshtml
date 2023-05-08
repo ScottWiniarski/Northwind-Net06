@@ -19,14 +19,14 @@
           @* <div class="col col-xs-2 text-left"><strong>@c.CartItemId</strong></div> *@
           <div class="col col-xs-1 text-left">@(c.Product.ProductName)</div>
           <div class="col col-xs-2 text-center" id="price_@c.CartItemId">
-            @("$ " + (c.Product.UnitPrice).ToString("F"))
+            @("$ " + (c.Product.UnitPrice.ToString("F")))
             </div>
           @* @{
             var editedQuantity = '';
             if(("#increasecartquantity").)
           } *@
           <div class="col col-xs-3 text-center">
-            <button class="increasecartquantity" data-id="@c.CartItemId">
+            <button class="increasecartquantity" data-id="@c.CartItemId" >
               More
             </button>
             <button class="decreaseCartQuantity" data-id="@c.CartItemId">
@@ -34,12 +34,15 @@
             </button>
             <span id="qty_@c.CartItemId">@c.Quantity</span> Unit(s)
             </div>
+            <button type="button" class="saveChanges_@c.CartItemId" hidden data-id="@c.CartItemId" >
+               Save Changes 
+            </button>
           <div class="col col-xs-4 text-right">
             <span id="total_@c.CartItemId">
               @("$ " + (c.Quantity * c.Product.UnitPrice).ToString("F"))</span>
             </div>
           <div class="col col-xs-2 text-center">
-                <button>
+                <button type="button" class="removeitem" data-id="@c.CartItemId">
                     Delete Entry
                 </button>   
           </div>

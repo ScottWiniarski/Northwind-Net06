@@ -30,8 +30,16 @@ namespace Northwind.Controllers
         // returns all products in a specific category where discontinued = true/false
         public IEnumerable<Product> GetByCategoryDiscontinued(int CategoryId, bool discontinued) => _dataContext.Products.Where(p => p.CategoryId == CategoryId 
         && p.Discontinued == discontinued).OrderBy(p => p.ProductName);
+        
         [HttpPost, Route("api/addtocart")]
         // adds a row to the cartitem table
         public CartItem Post([FromBody] CartItemJSON cartItem) => _dataContext.AddToCart(cartItem);
+
+        [HttpPost, Route("cart/updatequantity")]
+        // adds a row to the cartitem table
+        public CartItem UpdateQuantity([FromBody] CartItemJSON cartItem) => _dataContext.UpdateQuantity(cartItem);
+
+        [HttpPost, Route("api/removefromcart")]
+        public CartItem Remove([FromBody] ClearCartItemJSON cartItem) => _dataContext.RemoveFromCart(cartItem);
     }
 }

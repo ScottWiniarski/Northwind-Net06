@@ -36,7 +36,18 @@ public class DataContext : DbContext
     cartItem.Quantity = cartItemJSON.qty;
     SaveChanges();
     return cartItem;
-    
+  }
+
+  public CartItem RemoveFromCart(ClearCartItemJSON clearCartItemJSON){
+    int CustomerId = Customers.FirstOrDefault(c => c.Email == clearCartItemJSON.email).CustomerId;
+    int ProductId = clearCartItemJSON.id;
+
+    CartItem cartItem = CartItems.FirstOrDefault(ci => ci.ProductId == ProductId && ci.CustomerId == CustomerId);
+
+    CartItems.Remove(cartItem);
+
+    SaveChanges();
+    return cartItem;
   }
 
   public CartItem AddToCart(CartItemJSON cartItemJSON)
@@ -55,8 +66,6 @@ public class DataContext : DbContext
         Quantity = cartItemJSON.qty
       };
       CartItems.Add(cartItem);
-      
-      
     }
     else
     {
