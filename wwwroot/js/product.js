@@ -68,7 +68,7 @@ $(function () {
       let itemPrice = Number($('#price_' + id).html());
       let currentTotal = (qty * itemPrice);
       $('#qty_' + id).html(qty);
-      $('#total_' + id).html(currentTotal.toFixed(2));
+      $('#total_' + id).html(numberWithCommas(currentTotal.toFixed(2)));
 
       let element = $('#save_' + id);
       let original = Number(element.data("original"));

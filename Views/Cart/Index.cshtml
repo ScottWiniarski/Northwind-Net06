@@ -20,16 +20,16 @@
         </div>
         <div class="col col-xs-4 text-nowrap">
           <button class="increasecartquantity btn btn-primary btn-sm" data-id="@c.CartItemId" >
-            More
+            <i class="fa-regular fa-plus"></i>
           </button>
           <button class="decreasecartquantity btn btn-secondary btn-sm" data-id="@c.CartItemId">
-            Less
+            <i class="fa-solid fa-minus"></i>
           </button>
           <span id="qty_@c.CartItemId">@c.Quantity</span> Unit(s)
         </div>
         <div class="col col-xs-1">
           <button style="display:none;" data-original="@c.Quantity" type="button" class="save btn btn-info btn-sm" id="save_@c.CartItemId" data-id="@c.CartItemId" >
-            Save 
+            <i class="fa-solid fa-floppy-disk"></i> 
           </button>
         </div>
           <div class="col col-xs-1 text-nowrap">
