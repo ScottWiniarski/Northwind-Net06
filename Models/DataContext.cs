@@ -28,26 +28,16 @@ public class DataContext : DbContext
     SaveChanges();
   }
 
-  public CartItem UpdateQuantity(CartItemJSON cartItemJSON){
-    int CustomerId = Customers.FirstOrDefault(c => c.Email == cartItemJSON.email).CustomerId;
-    int ProductId = cartItemJSON.id;
-    CartItem cartItem = CartItems.FirstOrDefault(ci => ci.ProductId == ProductId && ci.CustomerId == CustomerId);
-
-    cartItem.Quantity = cartItemJSON.qty;
+  public void UpdateQuantity(CartItemUpdateJSON item){
+    CartItem cartItem = CartItems.FirstOrDefault(ci => ci.CartItemId == item.id);
+    cartItem.Quantity = item.qty;
     SaveChanges();
-    return cartItem;
   }
 
-  public CartItem RemoveFromCart(ClearCartItemJSON clearCartItemJSON){
-    int CustomerId = Customers.FirstOrDefault(c => c.Email == clearCartItemJSON.email).CustomerId;
-    int ProductId = clearCartItemJSON.id;
-
-    CartItem cartItem = CartItems.FirstOrDefault(ci => ci.ProductId == ProductId && ci.CustomerId == CustomerId);
-
+  public void RemoveFromCart(CartItemUpdateJSON item){
+    CartItem cartItem = CartItems.FirstOrDefault(ci => ci.CartItemId == item.id);
     CartItems.Remove(cartItem);
-
     SaveChanges();
-    return cartItem;
   }
 
   public CartItem AddToCart(CartItemJSON cartItemJSON)

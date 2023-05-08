@@ -1,56 +1,58 @@
 @model IEnumerable<CartItem>
 
 <div id="User" style="display:none;" data-email="@User.Identity.Name" data-customer="@User.IsInRole("northwind-customer")"></div>
-<table class="table table-hover table-striped table-bordered">
-<thead>
     <h4>Your Cart</h4>
     <hr>
     <div style="display:none;" id="ProductId"></div>
-        <div class="row">
-          <div class="col col-xs-4"><strong>Product</strong></div>
-          <div class="col col-xs-4 text-left"><strong>Price</strong></div>
-          <div class="col col-xs-4"><strong>Quantity</strong></div>
-          <div class="col col-xs-4"><strong>Total</strong></div>
-        </div>
-</thead>
-<tbody>
+      <div class="row">
+        <div class="col col-xs-4"><strong>Product</strong></div>
+        <div class="col col-xs-1"><strong>Price</strong></div>
+        <div class="col col-xs-4"><strong>Quantity</strong></div>
+        <div class="col col-xs-1"></div>
+        <div class="col col-xs-1"><strong>Total</strong></div>
+        <div class="col col-xs-1"></div>
+      </div>
     @foreach(CartItem c in Model){
-    <div class="row">
-          @* <div class="col col-xs-2 text-left"><strong>@c.CartItemId</strong></div> *@
-          <div class="col col-xs-1 text-left">@(c.Product.ProductName)</div>
-          <div class="col col-xs-2 text-center" id="price_@c.CartItemId">
-            @("$ " + (c.Product.UnitPrice.ToString("F")))
-            </div>
-          @* @{
-            var editedQuantity = '';
-            if(("#increasecartquantity").)
-          } *@
-          <div class="col col-xs-3 text-center">
-            <button class="increasecartquantity" data-id="@c.CartItemId" >
-              More
-            </button>
-            <button class="decreaseCartQuantity" data-id="@c.CartItemId">
-              Less
-            </button>
-            <span id="qty_@c.CartItemId">@c.Quantity</span> Unit(s)
-            </div>
-            <button type="button" class="saveChanges_@c.CartItemId" hidden data-id="@c.CartItemId" >
-               Save Changes 
-            </button>
-          <div class="col col-xs-4 text-right">
-            <span id="total_@c.CartItemId">
-              @("$ " + (c.Quantity * c.Product.UnitPrice).ToString("F"))</span>
-            </div>
-          <div class="col col-xs-2 text-center">
-                <button type="button" class="removeitem" data-id="@c.CartItemId">
-                    Delete Entry
-                </button>   
+      <div class="row mb-2" id="row_@c.CartItemId">
+        <div class="col col-xs-4">@(c.Product.ProductName)</div>
+        <div class="col col-xs-1">
+          $<span id="price_@c.CartItemId">@c.Product.UnitPrice.ToString("F")</span>
+        </div>
+        <div class="col col-xs-4 text-nowrap">
+          <button class="increasecartquantity btn btn-primary btn-sm" data-id="@c.CartItemId" >
+            More
+          </button>
+          <button class="decreasecartquantity btn btn-secondary btn-sm" data-id="@c.CartItemId">
+            Less
+          </button>
+          <span id="qty_@c.CartItemId">@c.Quantity</span> Unit(s)
+        </div>
+        <div class="col col-xs-1">
+          <button style="display:none;" data-original="@c.Quantity" type="button" class="save btn btn-info btn-sm" id="save_@c.CartItemId" data-id="@c.CartItemId" >
+            Save 
+          </button>
+        </div>
+          <div class="col col-xs-1 text-nowrap">
+            $<span id="total_@c.CartItemId">@((c.Quantity * c.Product.UnitPrice).ToString("F"))</span>
+          </div>
+          <div class="col col-xs-1">
+            <button type="button" class="removeItem btn btn-danger btn-sm" data-id="@c.CartItemId">
+              Delete
+            </button>   
           </div>
         </div>
     }
-</tbody>
 
-</table>
+<!-- toast -->
+<!-- Flexbox container for aligning the toasts -->
+<div id="cart_toast" class="toast bg-info text-light" role="alert" aria-live="assertive" aria-atomic="true" style="position: fixed;top: 65px;right: 10px;">
+  <div class="toast-header">
+    <strong id="toast_header">This is a toast header</strong>
+  </div>
+  <div class="toast-body" id="toast_body">
+    This is a toast message.
+  </div>
+</div>
 
 @section Scripts
 {
