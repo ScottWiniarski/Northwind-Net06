@@ -152,10 +152,10 @@ $(function () {
         }
       });
   });
-  function toast(header, message) {
-    $('#toast_header').html(header);
-    $('#toast_body').html(message);
-    $('#cart_toast').toast({ delay: 2500 }).toast('show');
-  }
 });
-  
+
+function toast(header, message) {
+  $('#toast_header').html(header);
+  $('#toast_body').html(message);
+  $('#cart_toast').toast({ delay: 2500 }).toast('show');
+}

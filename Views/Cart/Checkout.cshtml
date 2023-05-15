@@ -1,54 +1,102 @@
 @model CheckoutModel
 
 <div id="User" style="display:none;" data-email="@User.Identity.Name" data-customer="@User.IsInRole("northwind-customer")"></div>
+<div id="numProductsInCart" style="display:none;" data-cart-quantity="@Model.Cart.Count()"></div>
 <div class="container row">
-    <div class="col col-6 border p-2 pt-3">
+    <div class="col col-6 border">
         <table class="table table-hover table-striped table-bordered">
             <thead>
-                <h4>Order Summary</h4>
+                <h4 class="mt-3 ml-2">Order Summary</h4>
                 <hr>
                 <div style="display:none;" id="ProductId"></div>
-                    <div class="row">
+                <div class="row mb-2">
                     <div class="col"><strong>Product</strong></div>
                     <div class="col text-left"><strong>Price</strong></div>
                     <div class="col"><strong>Quantity</strong></div>
                     <div class="col"><strong>Total</strong></div>
-                    </div>
+                </div>
             </thead>
             <tbody>
+                @{
+                        var orderTotal = 0.0;
+                        var newOrder = new OrderJSON(@User.Identity.Name);
+                        var tableRows = 0;
+                    }
                 @foreach(CartItem c in Model.Cart){
-                <div class="row">
-                    @* <div class="col col-xs-2 text-left"><strong>@c.CartItemId</strong></div> *@
-                    <div class="col text-left">@(c.Product.ProductName)</div>
-                    <div class="col text-left" id="price_@c.CartItemId">
-                        @("$ " + (c.Product.UnitPrice.ToString("F")))
+                    var currentOrderDetailsInstance = new OrderDetailsJSON(){
+                        ProductId = c.ProductId,
+                        UnitPrice = c.Product.UnitPrice,
+                        Quantity = c.Quantity
+                    };
+                    
+                    tableRows++;
+
+                    newOrder.OrderDetails.Add(currentOrderDetailsInstance);
+                    
+                    orderTotal += (double)(c.Product.UnitPrice * c.Quantity) ;
+                    <div class="row mb-2" id="row_@tableRows">
+                        <div class="col col-xs-4" id="product_@tableRows" data-product-id="@c.ProductId">@(c.Product.ProductName)</div>
+                        <div class="col col-xs-1">
+                        $<span id="price_@tableRows" data-unit-price="@currentOrderDetailsInstance.UnitPrice">
+                            @currentOrderDetailsInstance.UnitPrice.ToString("F")</span>
                         </div>
-                    <div class="col text-left">
-                        <span id="qty_@c.CartItemId">@c.Quantity</span> Unit(s)
+                        <div class="col col-xs-4 text-nowrap">
+                        <span id="qty_@tableRows" data-quantity="@currentOrderDetailsInstance.Quantity">@currentOrderDetailsInstance.Quantity</span> Unit(s)
                         </div>
-                    <div class="col text-left">
-                        <span id="total_@c.CartItemId">
-                        @("$ " + (c.Quantity * c.Product.UnitPrice).ToString("F"))</span>
+                        <div class="col col-xs-1 text-nowrap">
+                            $<span id="total_@tableRows">@((currentOrderDetailsInstance.Quantity * currentOrderDetailsInstance.UnitPrice * (1 - currentOrderDetailsInstance.Discount)).ToString("F"))</span>
                         </div>
+                        <div id="discountPercentContainer_@tableRows" hidden>0</div>
                     </div>
                 }
+                <hr>
+                <div class="text-end">
+                    <b>Order Total:</b> $<span id="orderTotal" class="d-inline">@orderTotal.ToString("F")</span>
+                </div>
             </tbody>
         </table>
     </div>
     @* TODO CheckoutForm *@
-    <div class="col col-6 border">
+    <div class="col col-6 border d-flex flex-column justify-content-center">
         @* Apply Discounts *@
-        <div id="discountsContainer" class="container" data-discounts="@Model.Discounts">
-
+        <div id="discountsContainer" class="container">
+            <div id="currentDiscounts" style="display:none;">
+            @foreach (var discount in Model.Discounts){
+                <div class="discount" id="discount-@discount.Code" 
+                    data-discount-code="@discount.Code" 
+                    data-discount-percent="@discount.DiscountPercent" 
+                    data-product-id="@discount.ProductId">
+                </div>
+            }
+            </div>
+            <h6>Enter Discount Codes:</h6>
+            <div id="discountCodeForm" class="container row">
+                <input type="text" class="col col-10 form-control" id="discountCodeInput" placeholder="Discount Code">
+                <button type="button" id="discountCodeButton" class="col col-2 btn btn-success"><i class="fa-solid fa-check"></i></button>
+            </div>
         </div>
 
         @* Create Order *@
-        <div id="confirmationContainer" class="container">
-
+        <div id="confirmationContainer" class="container row justify-content-center mt-4">
+            <a class="col col-5 mx-1" asp-controller="Cart" asp-action="Index"><button type="button" class="orderConfirmationButton btn btn-warning w-100">Return to Cart</button></a>
+            <a class="col col-5 mx-1"><button type="button" id="place-order-btn" class="orderConfirmationButton btn btn-success w-100">Place Order</button></a>
         </div>
     </div>
 </div>
+
+<!-- toast -->
+<!-- Flexbox container for aligning the toasts -->
+<div id="cart_toast" class="toast bg-info text-light" role="alert" aria-live="assertive" aria-atomic="true" style="position: fixed;top: 65px;right: 10px;">
+  <div class="toast-header">
+    <strong id="toast_header">This is a toast header</strong>
+  </div>
+  <div class="toast-body" id="toast_body">
+    This is a toast message.
+  </div>
+</div>
+
 @section Scripts
 {
   <script src="../../js/product.js"></script>
+  <script src="../../js/checkout.js"></script>
 }

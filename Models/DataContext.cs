@@ -9,6 +9,8 @@ public class DataContext : DbContext
   public DbSet<Discount> Discounts { get; set; }
   public DbSet<Customer> Customers { get; set; }
   public DbSet<CartItem> CartItems { get; set; }
+  public DbSet<Order> Orders { get; set; }
+  public DbSet<OrderDetails> OrderDetails { get; set; }
 
   public void AddCustomer(Customer customer)
   {
@@ -66,5 +68,51 @@ public class DataContext : DbContext
     SaveChanges();
     cartItem.Product = Products.Find(cartItem.ProductId);
     return cartItem;
+  }
+
+  public Order CreateOrder(OrderJSON orderJSON){
+    var Customer = Customers.FirstOrDefault(c => c.Email == orderJSON.CustomerEmail);
+    var orderDate = DateTime.Today;
+    decimal orderTotal = 0;
+
+    foreach(OrderDetailsJSON details in orderJSON.OrderDetails){
+      orderTotal += details.UnitPrice * details.Quantity;
+    }
+
+    //Create Order
+    var newOrder = new Order() {
+      CustomerId = Customer.CustomerId,
+      EmployeeId = 1,
+      OrderDate = orderDate,
+      RequiredDate = ShippingPolicy.RequiredDate(orderDate),
+      ShippedDate = ShippingPolicy.ShippedDate(orderDate),
+      ShipVia = ShippingPolicy.ShippingVia(),
+      Freight = ShippingPolicy.FreightCost(orderTotal),
+      ShipName = Customer.CompanyName,
+      ShipAddress = Customer.Address,
+      ShipCity = Customer.City,
+      ShipRegion = Customer.Region,
+      ShipPostalCode = Customer.PostalCode,
+      ShipCountry = Customer.Country,
+      OrderDetails = new List<OrderDetails>()
+    };
+
+    Orders.Add(newOrder);
+
+    foreach(OrderDetailsJSON details in orderJSON.OrderDetails){
+      newOrder.OrderDetails.Add(new OrderDetails() {
+        OrderId = newOrder.OrderId,
+        ProductId = details.ProductId,
+        UnitPrice = details.UnitPrice,
+        Quantity = details.Quantity,
+        Discount = details.Discount
+      });
+    }
+
+    OrderDetails.AddRange(newOrder.OrderDetails);
+
+    SaveChanges();
+
+    return newOrder;
   }
 }

@@ -41,5 +41,8 @@ namespace Northwind.Controllers
 
         [HttpDelete, Route("api/cartitem")]
         public void Remove([FromBody] CartItemUpdateJSON cartItem) => _dataContext.RemoveFromCart(cartItem);
+
+        [HttpPost, Route("api/submitorder")]
+        public Order Post([FromBody] OrderJSON order) => _dataContext.CreateOrder(order);
     }
 }
